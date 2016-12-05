@@ -34,20 +34,20 @@ function [miss,roc,gt,dt] = acfTest( varargin )
 
 % get parameters
 dfs={ 'name','REQ', 'imgDir','REQ', 'gtDir','REQ', 'pLoad',[], ...
-  'pModify',[], 'thr',.5,'mul',0, 'reapply',0, 'ref',10.^(-2:.25:0), ...
-  'lims',[3.1e-3 1e1 .05 1], 'show',0 };
+    'pModify',[], 'thr',.5,'mul',0, 'reapply',0, 'ref',10.^(-2:.25:0), ...
+    'lims',[3.1e-3 1e1 .05 1], 'show',0 };
 [name,imgDir,gtDir,pLoad,pModify,thr,mul,reapply,ref,lims,show] = ...
-  getPrmDflt(varargin,dfs,1);
+    getPrmDflt(varargin,dfs,1);
 
 % run detector on directory of images
 bbsNm=[name 'Dets.txt'];
 if(reapply && exist(bbsNm,'file')), delete(bbsNm); end
 if(reapply || ~exist(bbsNm,'file'))
-  detector = load([name 'Detector.mat']);
-  detector = detector.detector;
-  if(~isempty(pModify)), detector=acfModify(detector,pModify); end
-  imgNms = bbGt('getFiles',{imgDir});
-  acfDetect( imgNms, detector, bbsNm );
+    detector = load([name 'Detector.mat']);
+    detector = detector.detector;
+    if(~isempty(pModify)), detector=acfModify(detector,pModify); end
+    imgNms = bbGt('getFiles',{imgDir});
+    acfDetect( imgNms, detector, bbsNm );
 end
 
 % run evaluation using bbGt
@@ -59,8 +59,25 @@ miss=exp(mean(log(max(1e-10,1-miss)))); roc=[score fp tp];
 % optionally plot roc
 if( ~show ), return; end
 figure(show); plotRoc([fp tp],'logx',1,'logy',1,'xLbl','fppi',...
-  'lims',lims,'color','g','smooth',1,'fpTarget',ref);
+    'lims',lims,'color','g','smooth',1,'fpTarget',ref);
 title(sprintf('log-average miss rate = %.2f%%',miss*100));
-savefig([name 'Roc'],show,'png');
-
+savefigure([name 'Roc'],show,'png');
+fprintf('miss rate: %f', miss);
+% plot PR VS Recall
+ref = (1:10)*0.1;
+% Compute Precision Recall
+[recall,precision,~,ref_pr] = bbGt('compRoc', gt, dt, 0, ref);
+pr = mean(ref_pr);
+fprintf('average precision: %f', pr);
+figure(show+1)
+plot(recall, precision,'Color', 'g', 'LineStyle','-','LineWidth',2);
+x = max(1, max(recall));
+x = min(x-mod(x,.1), 1.0);
+y=min(0.8, min(precision));
+y=max(y-mod(y,.1), .01);
+xlim([0, x]); ylim([y, 1]); set(gca,'xtick',0:.1:1);
+xlabel('Recall','FontSize',12); ylabel('Precision','FontSize',12);
+ldg = sprintf('AP = %0.2f%%', pr*100);
+legend(ldg, 'Location','sw');
+savefigure([name 'AP'],show,'png');
 end

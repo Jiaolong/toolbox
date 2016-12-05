@@ -2,14 +2,17 @@
 addpath(genpath('..'));
 show = false;
 data_dir = fullfile('..', 'data', 'Data_FDDB');
-
-model_file = fullfile('models', 'FaceDetector.mat');
+save_folder = 'detections-acf-wider-val';
+if ~exist(fullfile(data_dir, save_folder), 'dir')
+    mkdir(fullfile(data_dir, save_folder));
+end
+model_file = fullfile('models', 'Face-WIDER-VAL-Detector.mat');
 % Load detector
 load(model_file);
 % modify detector (see acfModify)
 pNms = opts.pNms;
 pNms.overlap = 0.5;
-pModify=struct('cascThr',-1,'cascCal',-0.008, 'pNms', pNms);
+pModify=struct('cascThr',-1,'cascCal',-0.008);
 detector=acfModify(detector,pModify);
 
 % Run detector
@@ -38,7 +41,7 @@ for i=1:num_folds
         boxes_list{j} = bbs;
     end
     % write detections into file
-    save_file = fullfile(data_dir, 'detections', sprintf('fold-%02d-out.txt', i));
+    save_file = fullfile(data_dir, save_folder, sprintf('fold-%02d-out.txt', i));
     fid = fopen(save_file,'w');
     for j=1:num_images
         fprintf(fid, '%s\n', img_names{j});

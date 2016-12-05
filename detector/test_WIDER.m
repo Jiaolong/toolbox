@@ -4,8 +4,12 @@ show = false;
 data_dir = fullfile('..', 'data', 'Data_WIDER');
 images_root = fullfile(data_dir, 'WIDER_Val', 'images');
 
-model_file = fullfile('models', 'FaceDetector.mat');
-
+model_file = fullfile('models', 'Face-WIDER-VAL-Detector.mat');
+save_name = 'pred_list.mat';
+save_dir = fullfile(data_dir, 'eval_tools', 'detections-acf-wider-val');
+if ~exist(save_dir, 'dir')
+    mkdir(save_dir);
+end
 % Read validation set
 load(fullfile(data_dir, 'v1', 'wider_face_val.mat'));
 event_num = 61;
@@ -26,7 +30,7 @@ for i=1:event_num
     for j=1:img_num
         img_file = sprintf('%s/%s/%s.jpg', images_root, event_list{i}, img_list{j});
         I = imread(img_file);
-        tic, bbs = acfDetect(I, detector); toc
+        bbs = acfDetect(I, detector);
         if show
             figure(1); im(I); bbApply('draw',bbs); pause(.1);
         end
@@ -37,4 +41,4 @@ for i=1:event_num
 end
 
 % save detections
-save(fullfile(data_dir, 'eval_tools', 'detections', 'acf_dlib_train.mat'), 'pred_list');
+save(fullfile(save_dir, save_name), 'pred_list');

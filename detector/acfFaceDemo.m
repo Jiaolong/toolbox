@@ -14,7 +14,15 @@ opts.pJitter=struct('flip',1);
 opts.pBoost.pTree.fracFtrs=1/16;
 pLoad={'lbls',{'face'},'squarify',{0,1}};
 opts.pLoad = pLoad;
-opts.name='models/Face';
+opts.name='models_face/Face-ACF-DLIB-TRAIN-';
+
+opts.pPyramid.pChns.pColor.smooth=0;
+opts.pBoost.pTree.maxDepth=5;
+opts.pBoost.discrete=0;
+opts.nNeg=25000;
+opts.nAccNeg=50000;
+opts.pPyramid.pChns.pGradHist.softBin=1;
+opts.pPyramid.pChns.shrink=2;
 
 opts.posGtDir=fullfile(data_dir, train_set, 'posGt');
 opts.posImgDir=fullfile(data_dir, train_set, 'pos');
@@ -24,15 +32,15 @@ opts.negImgDir=fullfile(data_dir_dlib, train_set, 'neg');
 detector = acfTrain( opts );
 
 % modify detector (see acfModify)
-pNms = opts.pNms;
-pNms.overlap = 0.5;
+% pNms = opts.pNms;
+% pNms.overlap = 0.5;
 % pModify=struct('cascThr',-1,'cascCal',-0.008, 'pNms', pNms);
 pModify=struct('cascThr',-1,'cascCal', -0.008);
 detector=acfModify(detector,pModify);
 
 % run detector on a sample image (see acfDetect)
 close all;
-imgNms=bbGt('getFiles',{fullfile(data_dir, train_set, 'pos')});
+imgNms=bbGt('getFiles',{fullfile(data_dir_dlib, test_set, 'pos')});
 if 0
     I=imread(imgNms{100}); tic, bbs=acfDetect(I,detector); toc
     figure(1); im(I); bbApply('draw',bbs); pause(.1);
@@ -47,6 +55,6 @@ end
 
 % optionally show top false positives ('type' can be 'fp','fn','tp','dt')
 if 0
-    bbGt('cropRes',gt,dt,imgNms,'type','fp','n',50,...
-        'show',4);%'dims',opts.modelDs([1 1]));
+    bbGt('cropRes',gt,dt,imgNms,'type','fn','n',50,...
+        'show',4, 'dims',opts.modelDs([1 1]));
 end

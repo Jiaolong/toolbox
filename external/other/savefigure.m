@@ -1,4 +1,4 @@
-function savefig(fname, varargin)
+function savefigure(fname, varargin)
 	
 % Usage: savefig(filename, fighdl, options)
 %
