@@ -2,16 +2,14 @@
 addpath(genpath('..'));
 show = false;
 data_dir = fullfile('..', 'data', 'Data_FDDB');
-save_folder = 'detections-acf-wider-val';
+save_folder = 'detections-acf-dlib-train';
 if ~exist(fullfile(data_dir, save_folder), 'dir')
     mkdir(fullfile(data_dir, save_folder));
 end
-model_file = fullfile('models', 'Face-WIDER-VAL-Detector.mat');
+model_file = fullfile('models_face', 'Face-ACF-DLIB-TRAIN-Detector.mat');
 % Load detector
 load(model_file);
 % modify detector (see acfModify)
-pNms = opts.pNms;
-pNms.overlap = 0.5;
 pModify=struct('cascThr',-1,'cascCal',-0.008);
 detector=acfModify(detector,pModify);
 

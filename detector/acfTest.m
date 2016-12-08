@@ -49,7 +49,6 @@ if(reapply || ~exist(bbsNm,'file'))
     imgNms = bbGt('getFiles',{imgDir});
     acfDetect( imgNms, detector, bbsNm );
 end
-
 % run evaluation using bbGt
 [gt,dt] = bbGt('loadAll',gtDir,bbsNm,pLoad);
 [gt,dt] = bbGt('evalRes',gt,dt,thr,mul);
@@ -61,14 +60,14 @@ if( ~show ), return; end
 figure(show); plotRoc([fp tp],'logx',1,'logy',1,'xLbl','fppi',...
     'lims',lims,'color','g','smooth',1,'fpTarget',ref);
 title(sprintf('log-average miss rate = %.2f%%',miss*100));
-savefigure([name 'Roc'],show,'png');
-fprintf('miss rate: %f', miss);
+%savefigure([name 'Roc'],show,'png');
+fprintf('miss rate: %f\n', miss);
 % plot PR VS Recall
 ref = (1:10)*0.1;
 % Compute Precision Recall
 [recall,precision,~,ref_pr] = bbGt('compRoc', gt, dt, 0, ref);
 pr = mean(ref_pr);
-fprintf('average precision: %f', pr);
+fprintf('average precision: %f\n', pr);
 figure(show+1)
 plot(recall, precision,'Color', 'g', 'LineStyle','-','LineWidth',2);
 x = max(1, max(recall));
@@ -79,5 +78,5 @@ xlim([0, x]); ylim([y, 1]); set(gca,'xtick',0:.1:1);
 xlabel('Recall','FontSize',12); ylabel('Precision','FontSize',12);
 ldg = sprintf('AP = %0.2f%%', pr*100);
 legend(ldg, 'Location','sw');
-savefigure([name 'AP'],show,'png');
+%savefigure([name 'AP'],show,'png');
 end
