@@ -19,10 +19,10 @@ opts.name='models_face/Face-ACF-DLIB-TRAIN-';
 
 opts.pPyramid.pChns.pColor.smooth=0;
 opts.pPyramid.pChns.pGradHist.softBin=1;
-opts.nWeak=[64 256 1024 2048 4096];
+opts.nWeak=[32 512 1024 2048 4096];
 opts.pBoost.pTree.maxDepth=5;
-opts.pBoost.discrete=0;
-opts.pPyramid.pChns.shrink=2;
+%opts.pBoost.discrete=0;
+%opts.pPyramid.pChns.shrink=2;
 opts.nNeg=10000; 
 opts.nAccNeg=20000;
 opts.pNms.overlap = 0.5;
