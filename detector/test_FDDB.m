@@ -1,12 +1,13 @@
 % Test on FDDB dataset
+function test_FDDB(name)
 addpath(genpath('..'));
 show = false;
 data_dir = fullfile('..', 'data', 'Data_FDDB');
-save_folder = 'detections-acf-dlib-train';
+save_folder = ['detections-' name];
 if ~exist(fullfile(data_dir, save_folder), 'dir')
     mkdir(fullfile(data_dir, save_folder));
 end
-model_file = fullfile('models_face', 'Face-ACF-DLIB-TRAIN-Detector.mat');
+model_file = fullfile('models_face', [name '-Detector.mat']);
 % Load detector
 load(model_file);
 % modify detector (see acfModify)
@@ -49,4 +50,5 @@ for i=1:num_folds
             fprintf(fid, '%f %f %f %f %f\n', boxes(b, :));
         end
     end
+end
 end

@@ -5,7 +5,10 @@
 set -x
 set -e
 
-rm -rf models_face/*
-#echo -e "\e[38;5;82mRunning experiment \e[38;5;198m${exid}\e[0m"
+DATASET=WIDER
+
+rm -rf models_face/*${DATASET}*
+
+#echo -e "\e[38;5;82mtTraining ACF detector on \e[38;5;198m${DATASET\e[0m"
     
-matlab -nodisplay -r "matlabpool('open', 4);acfFaceDemo;exit;"
+matlab -nodisplay -r "matlabpool('open', 4);acfFace${DATASET};exit;"
