@@ -5,7 +5,8 @@
 set -x
 set -e
 
-DATASET=WIDER
+DATASET=DLIB
+#DATASET=WIDER
 
 rm -rf models_face/*${DATASET}*
 

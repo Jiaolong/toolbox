@@ -1,5 +1,5 @@
 addpath(genpath('..'));
-cd(fileparts(which('acfTrian.m')));
+cd(fileparts(which('acfTrain.m')));
 data_dir_dlib = fullfile('..', 'data', 'dlib_face_detection_dataset');
 data_dir = data_dir_dlib;
 % data_dir = fullfile('..', 'data', 'Data_WIDER', 'acf_val');
@@ -20,12 +20,12 @@ opts.name='models_face/Face-ACF-DLIB-TRAIN-';
 opts.pPyramid.pChns.pColor.smooth=0;
 opts.pPyramid.pChns.pGradHist.softBin=1;
 opts.nWeak=[32 512 1024 2048 4096];
-opts.pBoost.pTree.maxDepth=5;
-%opts.pBoost.discrete=0;
+opts.pBoost.pTree.maxDepth=3;
+opts.pBoost.discrete=0;
 %opts.pPyramid.pChns.shrink=2;
-opts.nNeg=10000; 
-opts.nAccNeg=20000;
-opts.pNms.overlap = 0.5;
+opts.nNeg=25000; 
+opts.nAccNeg=50000;
+opts.pNms.overlap = 0.3;
 
 opts.posGtDir=fullfile(data_dir, train_set, 'posGt');
 opts.posImgDir=fullfile(data_dir, train_set, 'pos');
