@@ -1,4 +1,10 @@
 #! /usr/bin/env python
+#--------------------------------------------------
+# ULSEE-ACF-Detector
+#
+# Copyright (c) 2016
+# Written by Jiaolong Xu
+#--------------------------------------------------
 """
 Create train/test data for ACF detector
 The data is organized in Caltech Pedestrian

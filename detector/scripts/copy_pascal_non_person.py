@@ -1,4 +1,15 @@
 #! /usr/bin/env python
+#--------------------------------------------------
+# ULSEE-ACF-Detector
+#
+# Copyright (c) 2016
+# Written by Jiaolong Xu
+#--------------------------------------------------
+"""
+Copy PASCAL 2007 non-person images to make negative
+training set.
+"""
+
 import os
 import shutil
 

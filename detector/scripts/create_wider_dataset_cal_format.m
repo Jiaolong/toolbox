@@ -1,8 +1,12 @@
-% Create ACF required ground truth format
-% Copyright 2016, Jiaolong Xu
-
-% Read WIDER training data
-function create_acf_gt()
+%--------------------------------------------------
+% ULSEE-ACF-Detector
+%
+% Create caltech format ground truth for wider dataset
+%
+% Copyright (c) 2016
+% Written by Jiaolong Xu
+%--------------------------------------------------
+function create_wider_dataset_cal_format()
 setname = 'train';
 img_dir = fullfile(sprintf('WIDER_%s', setname), 'images');
 load(fullfile('v1', sprintf('wider_face_%s.mat', setname)));

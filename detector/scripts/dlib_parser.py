@@ -1,10 +1,13 @@
 #! /usr/bin/env python
-"""
-Parse dlib annotation file
+#--------------------------------------------------
+# ULSEE-ACF-Detector
+#
+# Parse dlib annotation file
+#
+# Copyright (c) 2016
+# Written by Jiaolong Xu
+#--------------------------------------------------
 
-copyright 2016 jiaolong xu
-jiaolongxu-at-gmail.com
-"""
 import os
 
 def parse_dlib_annotation(fname):

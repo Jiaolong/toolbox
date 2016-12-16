@@ -4,3 +4,4 @@
 /detector/models_face
 /detector/*.sh
 /data
+*.pyc
