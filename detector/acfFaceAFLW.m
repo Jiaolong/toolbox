@@ -1,34 +1,33 @@
 addpath(genpath('..'));
 cd(fileparts(which('acfTrain.m')));
-data_dir_dlib = fullfile('..', 'data', 'aflw', 'data');
-data_dir = data_dir_dlib;
+data_dir = fullfile('..', 'data', 'aflw', 'data');
 train_set = 'train'; % train or train_tiny
-test_set = 'test';
+test_set  = 'test';
 
 opts=acfTrain();
 opts.modelDs=[72 72];
 opts.modelDsPad=[80 80];
 %opts.nWeak=[64 512 1024 2048];
-%opts.nWeak=[32 128 512 2048];
+opts.nWeak=[32 128 512 2048];
 opts.pJitter=struct('flip',1);
 opts.pBoost.pTree.fracFtrs=1/16;
 pLoad={'lbls',{'face'},'squarify',{0,1}};
 opts.pLoad = pLoad;
 opts.name='models_face/Face-ACF-AFLW-';
 
-opts.pPyramid.pChns.pColor.smooth=0;
-opts.pPyramid.pChns.pGradHist.softBin=1;
-opts.nWeak=[32 512 1024 2048 4096];
-opts.pBoost.pTree.maxDepth=3;
-opts.pBoost.discrete=0;
+%opts.pPyramid.pChns.pColor.smooth=0;
+%opts.pPyramid.pChns.pGradHist.softBin=1;
+%opts.nWeak=[32 512 1024 2048 4096];
+%opts.pBoost.pTree.maxDepth=3;
+%opts.pBoost.discrete=0;
 %opts.pPyramid.pChns.shrink=2;
-opts.nNeg=25000; 
-opts.nAccNeg=50000;
+%opts.nNeg=25000; 
+%opts.nAccNeg=50000;
 opts.pNms.overlap = 0.3;
 
 opts.posGtDir=fullfile(data_dir, train_set, 'posGt');
 opts.posImgDir=fullfile(data_dir, train_set, 'pos');
-opts.negImgDir=fullfile(data_dir_dlib, train_set, 'neg');
+opts.negImgDir=fullfile(data_dir, test_set, 'neg');
 
 % train detector (see acfTrain)
 detector = acfTrain( opts );
@@ -50,8 +49,8 @@ end
 
 % test detector and plot roc (see acfTest)
 if 1
-    [miss,~,gt,dt]=acfTest('name',opts.name,'imgDir',fullfile(data_dir_dlib, test_set, 'pos'),...
-        'gtDir',fullfile(data_dir_dlib, test_set, 'posGt'), 'pLoad',opts.pLoad,...
+    [miss,~,gt,dt]=acfTest('name',opts.name,'imgDir',fullfile(data_dir, test_set, 'pos'),...
+        'gtDir',fullfile(data_dir, test_set, 'posGt'), 'pLoad',opts.pLoad,...
         'pModify',pModify, 'thr', 0.5, 'reapply',0,'show',2);
 end
 

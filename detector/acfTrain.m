@@ -2,7 +2,7 @@ function detector = acfTrain( varargin )
 % Train aggregate channel features object detector.
 %
 % Train aggregate channel features (ACF) object detector as described in:
-%  P. Dollár, R. Appel, S. Belongie and P. Perona
+%  P. Dollï¿½r, R. Appel, S. Belongie and P. Perona
 %   "Fast Feature Pyramids for Object Detection", PAMI 2014.
 % The ACF detector is fast (30 fps on a single core) and achieves top
 % accuracy on rigid object detection. Please see acfReadme.m for details.
@@ -244,6 +244,9 @@ else
     batch=min(batch,nImg-i); Is1=cell(1,batch);
     parfor j=1:batch, ij=i+j;
       I = feval(opts.imreadf,fs{1,ij},opts.imreadp{:}); %#ok<PFBNS>
+      if ismatrix(I)
+          I = cat(3, I, I, I);
+      end
       gt=[]; if(hasGt), [~,gt]=bbGt('bbLoad',fs{2,ij},opts.pLoad); end
       Is1{j} = sampleWins1( I, gt, detector, stage, positive );
     end

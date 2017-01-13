@@ -43,14 +43,14 @@ detector=acfModify(detector,pModify);
 
 % run detector on a sample image (see acfDetect)
 close all;
-if 0
+if 1
 	imgNms=bbGt('getFiles',{fullfile(data_dir_dlib, test_set, 'pos')});
     I=imread(imgNms{100}); tic, bbs=acfDetect(I,detector); toc
     figure(1); im(I); bbApply('draw',bbs); pause(.1);
 end
 
 % test detector and plot roc (see acfTest)
-if 1
+if 0
     [miss,~,gt,dt]=acfTest('name',opts.name,'imgDir',fullfile(data_dir_dlib, test_set, 'pos'),...
         'gtDir',fullfile(data_dir_dlib, test_set, 'posGt'), 'pLoad',opts.pLoad,...
         'pModify',pModify, 'thr', 0.5, 'reapply',0,'show',2);

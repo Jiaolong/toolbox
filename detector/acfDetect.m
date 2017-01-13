@@ -63,13 +63,17 @@ shrink=pPyramid.pChns.shrink; pad=pPyramid.pad;
 separate=nDs>1 && isfield(pNms,'separate') && pNms.separate;
 % read image and compute features (including optionally applying filters)
 if(all(ischar(I))), I=feval(imreadf,I,imreadp{:}); end
-P=chnsPyramid(I,pPyramid); bbs=cell(P.nScales,nDs);
+
+P=chnsPyramid(I,pPyramid); 
+
+bbs=cell(P.nScales,nDs);
 if(isfield(opts,'filters') && ~isempty(opts.filters)), shrink=shrink*2;
   for i=1:P.nScales, fs=opts.filters; C=repmat(P.data{i},[1 1 size(fs,4)]);
     for j=1:size(C,3), C(:,:,j)=conv2(C(:,:,j),fs(:,:,j),'same'); end
     P.data{i}=imResample(C,.5);
   end
 end
+
 % apply sliding window classifiers
 for i=1:P.nScales
   for j=1:nDs, opts=Ds{j}.opts;
@@ -84,5 +88,6 @@ for i=1:P.nScales
     if(separate), bb(:,6)=j; end; bbs{i,j}=bb;
   end
 end; bbs=cat(1,bbs{:});
+
 if(~isempty(pNms)), bbs=bbNms(bbs,pNms); end
 end
